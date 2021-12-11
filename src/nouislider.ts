@@ -1922,6 +1922,22 @@ function scope(target: TargetElement, options: ParsedOptions, originalOptions: O
             pointer = true;
         }
 
+        // on iOS with VoiceOver enabled, the default interaction sends an event positioned I guess at the top
+        // left of the slider, which doesn't make for a helpful experience
+        // It looks like these can be detected as mouse events with no local offset,
+        // or a touch event with a identifier of 1 and no touch radius
+        if ((mouse && e.offsetX == 0 && e.offsetY == 0) ||
+            (touch && e.touches[0].identifier == 1 && e.touches[0].radiusX == 0 && e.touches[0].radiusX == 0))
+        {
+            // while the slider shouldn't do anything on its own, developers may, for their use case and
+            // configuration, want something to happen in this case, so send and event to tell them
+            if (e.type.indexOf('down') > 0)
+            {
+                fireEvent('ignoredArtificialEvent', -1);
+            }
+            return false;
+        }
+
         // Erroneous events seem to be passed in occasionally on iOS/iPadOS after user finishes interacting with
         // the slider. They appear to be of type MouseEvent, yet they don't have usual properties set. Ignore
         // events that have no touches or buttons associated with them. (#1057, #1079, #1095)
