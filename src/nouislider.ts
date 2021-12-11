@@ -1933,6 +1933,9 @@ function scope(target: TargetElement, options: ParsedOptions, originalOptions: O
             // configuration, want something to happen in this case, so send and event to tell them
             if (e.type.indexOf('down') > 0)
             {
+                // stop propagation so that we don't emit this event multiple times
+                e.stopPropagation();
+                e.preventDefault();
                 fireEvent('ignoredArtificialEvent', -1);
             }
             return false;

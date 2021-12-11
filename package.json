@@ -1,7 +1,7 @@
 {
   "name": "@andrewstart/nouislider",
   "description": "A version of nouislider with additional handling for accessibility.",
-  "version": "15.5.0",
+  "version": "15.5.1",
   "main": "dist/nouislider.js",
   "style": "dist/nouislider.min.css",
   "types": "dist/nouislider.d.ts",
